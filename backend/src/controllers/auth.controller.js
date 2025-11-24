@@ -10,7 +10,7 @@ export const register = async(req,res)=>{
     //      check and validate that details like name, and email
     //     check for the user is already exist or not
     //      database call create user
-    //
+    //      
 
 
     try {
@@ -59,9 +59,16 @@ export const register = async(req,res)=>{
             password:hashedPassword
         })
 
+        if(!user){
+            return res.status(500)
+                .json({
+                    success:false,
+                    message:"user registration failed ."
+                })
+        }
+
 
         //     here to start ,  generating tokens  
-
 
 
         
