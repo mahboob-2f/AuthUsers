@@ -66,11 +66,22 @@ export const register = async(req,res)=>{
                     message:"user registration failed ."
                 })
         }
+        
+        const token = jwt.sign({id:user._id},process.env.SECRET,{expiresIn:process.env.EXPIRYIN});
 
+        const options={
+            httpOnly:true,
+            secure:true,
+            sameSite:"strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000 
+        }
 
-        //     here to start ,  generating tokens  
-
-
+        res.status(200)
+            .cookie('token',token,options)
+            .json({
+                success:true,
+                message:"User created successfully !",
+            });
         
         
     } catch (error) {
