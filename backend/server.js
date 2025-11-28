@@ -4,6 +4,7 @@ dotenv.config({path:'./.env',});
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectDB from './src/db/index.js';
+import { authRouter } from './src/routes/authRouter.route.js';
 
 
 
@@ -33,10 +34,13 @@ connectDB()
   
 
 
+//       Api Endpoints 
 
-app.get('/',(req,res)=>{
+app.get('/',(req,res)=>{          //   root end point 
     res.send("hello ghost");
 });
+
+app.use('/api/auth',authRouter);
 
 app.listen(port,()=>{
     console.log("server is listening at port",port);

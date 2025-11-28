@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { User } from '../models/user.models';
+import { User } from '../models/user.models.js';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 
@@ -15,6 +15,7 @@ export const register = async(req,res)=>{
 
     try {
         const {name,email,password}= req.body;
+        // console.log(name);
         if(
             [name,email,password].some((field)=> field?.trim()==='')
         ){
@@ -27,7 +28,7 @@ export const register = async(req,res)=>{
         //   validating email               we can use regular expressions also
         //                          but this validator package is better
 
-        if(!validator.isEmail({email})){
+        if(!validator.isEmail(email)){
             return res.status(400)
                 .json({
                     success:false,
@@ -85,17 +86,17 @@ export const register = async(req,res)=>{
         
         
     } catch (error) {
-        console.log("error while registering the user",error.message);
+        console.log("Error while registering the user : ",error.message);
         return res.status(500)
             .json({
                 success:false,
-                message:`user is not registered ${error.message}`,
+                message:`User is not registered : ${error.message}`,
             })
     }   
 
 }
 
-export const login = async(req,res)=>{
+export const logIn = async(req,res)=>{
     try{
 
         const {email,password}= req.body;
