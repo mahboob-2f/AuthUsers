@@ -164,3 +164,28 @@ export const login = async(req,res)=>{
     }
 }
 
+export const logOut = async(req,res)=>{
+    try{
+        const options={
+            httpOnly:true,
+            secure:true,
+            sameSite:"strict",
+        }
+
+        res.clearCookie('token',options);
+
+        return res.status(200)
+            .json({
+                success:true,
+                message:"User logged Out successfully",
+            })
+
+
+    }catch(error){
+        return res.status(400)
+            .json({
+                success:false,
+                message:`Something went wrong while logging Out ${error.message}`,
+            })
+    }
+}
