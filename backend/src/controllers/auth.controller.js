@@ -67,7 +67,7 @@ export const register = async(req,res)=>{
                 })
         }
         
-        const token = jwt.sign({id:user._id},process.env.SECRET,{expiresIn:process.env.EXPIRYIN});
+        const token = jwt.sign({id:user._id},process.env.SECRETKEY,{expiresIn:process.env.EXPIRYIN});
 
         const options={
             httpOnly:true,
@@ -76,12 +76,12 @@ export const register = async(req,res)=>{
             maxAge: 7 * 24 * 60 * 60 * 1000 
         }
 
-        res.status(200)
-            .cookie('token',token,options)
-            .json({
-                success:true,
-                message:"User created successfully !",
-            });
+        return res.status(200)
+                .cookie('token',token,options)
+                .json({
+                    success:true,
+                    message:"User created successfully !",
+                });
         
         
     } catch (error) {
@@ -94,3 +94,73 @@ export const register = async(req,res)=>{
     }   
 
 }
+
+export const login = async(req,res)=>{
+    try{
+
+        const {email,password}= req.body;
+
+        if(
+            [email,password].some((field)=> field?.trim()==='')
+        ){
+            return res.status(400)
+                .json({
+                    success:false,
+                    message:"Invalid user Credentials",
+                });
+        }
+
+        // validating email
+        if(!validator.isEmail(email)){
+            return res.status(400)
+                .json({
+                    success:false,
+                    message:"Email is Invalid",
+                })
+        }
+
+        const user = await User.findOne({email});
+        if(!user){
+            return res.status(400)
+                .json({
+                    success:false,
+                    message:"Invalid Email",
+                })
+        }
+        const isPasswordCorrect = await bcrypt.compare(password,user.password);
+        if(!isPasswordCorrect){
+            return res.status(400)
+                .json({
+                    success:false,
+                    message:"Invalid Password",
+                })
+        }
+
+        const token = jwt.sign({id:user._id},process.env.SECRETKEY,{expiresIn:process.env.EXPIRYIN});
+
+        const options={
+            httpOnly:true,
+            secure:true,
+            sameSite:"strict",
+            maxAge:7*24*60*60*1000,
+        }
+        res.cookie('token',token,options);    // here we are adding then after adding
+        //                                      we will return res object in line 150
+
+        return res.status(200)
+            .json({
+                success:true,
+                message:"User logged in Successfully",
+            })
+
+
+
+    }catch(error){
+        res.status(400)
+            .json({
+                success:false,
+                message:`Something went wrong with login ${error.message}`,
+            })
+    }
+}
+
