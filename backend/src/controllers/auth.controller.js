@@ -2,6 +2,7 @@ import validator from 'validator';
 import { User } from '../models/user.models.js';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
+import {transpoter} from '../config/nodemailer.config.js'
 
 
 export const register = async(req,res)=>{
@@ -76,6 +77,19 @@ export const register = async(req,res)=>{
             sameSite:"strict",
             maxAge: 7 * 24 * 60 * 60 * 1000 
         }
+        //  HERE we are sending mail to user that you have Registered
+
+        const mailOptions = {
+            from:process.env.SENDER_EMAIL,
+            to:email,
+            subject:"Welcome to AuthUser ",
+            text:`welcome to AuthUser , you have created account in
+                AuthUser with email ${email}`,
+            html:`<b>Hello ${name} </b>`,
+        }
+
+        await transpoter.sendMail(mailOptions);
+
 
         return res.status(200)
                 .cookie('token',token,options)
