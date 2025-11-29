@@ -209,3 +209,39 @@ export const logOut = async(req,res)=>{
             })
     }
 }
+
+//   Send Verification OTP to User's Email
+
+export const sendVerifyOtp= async (req,res)=>{
+    try{
+        const {userId}= req.body;
+
+        const user = await User.findById(userId);
+        if(!user){
+            return res.status(400)
+                .json({
+                    success:false,
+                    messgae:"User not found",
+                })
+        }
+
+        if(user.isAccountVerified){
+            return res.status(200)
+                .json({
+                    success:false,
+                    message:"user already verified",
+                })
+        }
+
+        const otp = Math.floor((Math.random() * 900000 + 1000000));
+
+
+
+    }catch(error){
+        res.status(400)
+            .json({
+                success:false,
+                message:`Verification failed ${error.message}`,
+            })
+    }
+}
