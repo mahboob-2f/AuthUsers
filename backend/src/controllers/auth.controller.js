@@ -77,6 +77,11 @@ export const register = async(req,res)=>{
             sameSite:"strict",
             maxAge: 7 * 24 * 60 * 60 * 1000 
         }
+
+
+        res.cookie('token',token,options);      //  token addded to res object
+
+
         //  HERE we are sending mail to user that you have Registered
 
         const mailOptions = {
@@ -88,11 +93,11 @@ export const register = async(req,res)=>{
             html:`<b>Hello ${name} </b>`,
         }
 
+
         await transpoter.sendMail(mailOptions);
 
 
         return res.status(200)
-                .cookie('token',token,options)
                 .json({
                     success:true,
                     message:"User created successfully !",
@@ -104,7 +109,7 @@ export const register = async(req,res)=>{
         return res.status(500)
             .json({
                 success:false,
-                message:`User is not registered : ${error.message}`,
+                message:`Error while registering the user: ${error.message}`,
             })
     }   
 
