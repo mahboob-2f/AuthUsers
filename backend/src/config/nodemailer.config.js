@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config({path:'./.env'})
 
 const transpoter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtp.gmail.com",   //    here we are using Gmail service for sending email
     port: 587,
     secure: false, 
     auth: {
