@@ -3,6 +3,7 @@ import { User } from '../models/user.models.js';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 import {transpoter} from '../config/nodemailer.config.js'
+import { use, useReducer } from 'react';
 
 
 export const register = async(req,res)=>{
@@ -233,8 +234,28 @@ export const sendVerifyOtp= async (req,res)=>{
                 })
         }
 
-        const otp = Math.floor((Math.random() * 900000 + 1000000));
+        const otp = String(Math.floor((Math.random() * 900000 + 1000000)));
 
+        user.verifyOtp=otp
+        user.verifyOtpExpiredAt=Date.now()+ 24*60*60*1000;
+        
+        await user.save({validateBefore:false});
+
+        const mailOptions={
+            from: process.env.SENDER_EMAIL,
+            to: `"AuthUser" ${user.email}`,
+            subject: "Account Verification OTP",
+            text:`Your otp is ${otp}. Verify your account with this OTP`,
+            html: "<b>Verification Required</b>", 
+        }
+
+        await transpoter.sendMail(mailOptions);
+
+        return res.status(200)
+            .json({
+                success:true,
+                message:'OTP send for Email Verification',
+            })
 
 
     }catch(error){
@@ -242,6 +263,71 @@ export const sendVerifyOtp= async (req,res)=>{
             .json({
                 success:false,
                 message:`Verification failed ${error.message}`,
+            })
+    }
+}
+
+
+//    for verification of Email
+
+export const verifyEmail = async(req,res)=>{
+    try{
+        const {userId,otp}=req.body;
+
+        if(
+            [userId,otp].some((field)=> field?.trim()==='')
+        ){
+            return res.status(400)
+                .json({
+                    success:false,
+                    message:"Both the userId and OTP Required",
+                })
+        }
+
+        const user= await User.findById(userId);
+
+        if(!user){
+            return res.status(400)
+                .json({
+                    success:false,
+                    message:"user not found",
+                })
+        }
+
+        if(user.verifyOtp===''  || user.verifyOtp!== otp){
+            return res.status(400)
+                .json({
+                    success:false,
+                    message:"Invalid OTP",
+                })
+        }
+
+        if(user.verifyOtpExpiredAt < Date.now()){
+            return res.status(400)
+                .json({
+                    success:false,
+                    message:"OTP expired",
+                })
+        }
+
+        user.isAccountVerified=true,
+        user.verifyOtp='',
+        user.verifyOtpExpiredAt=0
+
+        user.save({validateBefore:false});
+
+        return res.status(200)
+            .json({
+                success:false,
+                message:"Email verified Successfully",
+            })
+
+
+    }catch(error){
+        return res.status(400)
+            .json({
+                success:false,
+                message:`Error while verifying Email ${error.message}`,
             })
     }
 }
