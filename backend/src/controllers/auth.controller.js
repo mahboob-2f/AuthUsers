@@ -3,7 +3,7 @@ import { User } from '../models/user.models.js';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 import {transpoter} from '../config/nodemailer.config.js'
-import { use, useReducer } from 'react';
+
 
 
 export const register = async(req,res)=>{
@@ -91,7 +91,7 @@ export const register = async(req,res)=>{
             subject:"Welcome to AuthUser ",
             text:`welcome to AuthUser , you have created account in
                 AuthUser with email ${email}`,
-            html:`<b>Hello ${name} </b>`,
+
         }
 
 
@@ -246,7 +246,6 @@ export const sendVerifyOtp= async (req,res)=>{
             to: `"AuthUser" ${user.email}`,
             subject: "Account Verification OTP",
             text:`Your otp is ${otp}. Verify your account with this OTP`,
-            html: "<b>Verification Required</b>", 
         }
 
         await transpoter.sendMail(mailOptions);
