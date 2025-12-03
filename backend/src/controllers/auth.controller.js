@@ -465,7 +465,7 @@ export const resetPassword = async(req,res)=>{
         return res.status(400)
             .json({
                 success:false,
-                message:`Password is not Reset ${error.message}`,
+                message:`Password is not Reset : ${error.message}`,
             })
     }
 }
