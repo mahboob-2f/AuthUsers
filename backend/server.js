@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectDB from './src/db/index.js';
 import { authRouter } from './src/routes/authRouter.route.js';
+import { userRouter } from './src/routes/user.router.js';
 
 
 
@@ -41,6 +42,7 @@ app.get('/',(req,res)=>{          //   root end point
 });
 
 app.use('/api/auth',authRouter);
+app.use('/api/user',userRouter);
 
 app.listen(port,()=>{
     console.log("server is listening at port",port);

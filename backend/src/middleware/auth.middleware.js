@@ -17,7 +17,7 @@ const userAuth = async(req,res,next)=>{
         const decodedToken = jwt.verify(token,process.env.SECRETKEY);
         
         if(decodedToken?.id){
-            req.body.userId= decodedToken.id;
+            req.userId= decodedToken?.id;
         }else{
             return res.status(400)
                 .json({
@@ -31,7 +31,7 @@ const userAuth = async(req,res,next)=>{
         return res.status(400)
             .json({
                 success:false,
-                message:`Invalid cookie ${error.message}`,
+                message:`Invalid cookie :  ${error.message}`,
             })
     }
 }

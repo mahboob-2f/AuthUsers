@@ -215,7 +215,7 @@ export const logOut = async(req,res)=>{
 
 export const sendVerifyOtp= async (req,res)=>{
     try{
-        const {userId}= req.body;
+        const userId= req.userId;
 
         const user = await User.findById(userId);
         if(!user){
@@ -271,7 +271,8 @@ export const sendVerifyOtp= async (req,res)=>{
 
 export const verifyEmail = async(req,res)=>{
     try{
-        const {userId,otp}=req.body;
+        const {otp}=req.body;
+        const userId= req.userId;
 
         if(
             [userId,otp].some((field)=> field?.trim()==='')
