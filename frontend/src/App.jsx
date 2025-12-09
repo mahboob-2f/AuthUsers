@@ -1,9 +1,13 @@
 import React from 'react'
+import Routess from './Routess'
 
 function App() {
   return (
     <div>
-      <p className='text-xl text-[green]'>hello ghost</p>
+
+
+      
+      <Routess/>
     </div>
   )
 }
