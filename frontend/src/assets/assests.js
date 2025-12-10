@@ -1,4 +1,4 @@
-import logo from './file.svg'
+import logo from './logo.svg'
 
 export const assests = {
     logo
