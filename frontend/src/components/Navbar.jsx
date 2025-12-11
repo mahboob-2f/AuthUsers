@@ -1,6 +1,7 @@
 import React from 'react'
 import {assests} from '../assets/assests.js'
 import { FaArrowRight } from "react-icons/fa";
+import {Link} from 'react-router'
 
 const Navbar = () => {
   return (
@@ -11,7 +12,9 @@ const Navbar = () => {
         <div className='flex  justify-center items-center space-x-1 border px-5 py-2
           rounded-full bg-gray-200 hover:bg-gray-300 hover:cursor-pointer transition-all
           duration-200'>
-          <button className='hover:cursor-pointer' >Login  </button>
+          <Link to='/login'>
+            <button className='hover:cursor-pointer' >Login  </button>
+          </Link>
           <FaArrowRight size={12}/>
         </div>
     </div>
