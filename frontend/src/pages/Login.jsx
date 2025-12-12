@@ -41,12 +41,15 @@ const Login = () => {
           <div className='flex justify-between items-center bg-[#333A5C] space-x-1  px-4
             rounded-full text-white'>
             <div><RiLockPasswordFill size={18} /></div>
-            <input type={showPassword}
+
+            <input type={showPassword ? "text":"password"}
                placeholder='Password' required className='bg-transparent px-3 py-2 outline-0' />
-            <div>
+
+            <div onClick={()=>(setShowPassword(!showPassword))}>
               {
-                showPassword ?<IoIosEyeOff/> : <IoIosEye/>
+                showPassword ? <IoIosEyeOff/> : <IoIosEye/>
               }
+
             </div>
           </div>
           <p className='px-1 justify-self-start text-[15px] text-indigo-500 font-medium cursor-pointer'>Forgot Password ?</p>

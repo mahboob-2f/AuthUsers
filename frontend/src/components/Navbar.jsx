@@ -9,14 +9,14 @@ const Navbar = () => {
         <div className=''>
             <img src={assests.logo} alt="logo" className='w-18' loading='lazy' />
         </div>
+        <Link to='/login'>
         <div className='flex  justify-center items-center space-x-1 border px-5 py-2
           rounded-full bg-gray-200 hover:bg-gray-300 hover:cursor-pointer transition-all
           duration-200'>
-          <Link to='/login'>
             <button className='hover:cursor-pointer' >Login  </button>
-          </Link>
           <FaArrowRight size={12}/>
         </div>
+          </Link>
     </div>
   )
 }
