@@ -1,5 +1,6 @@
 import React from 'react'
 import Routess from './Routess'
+import {ToastContainer} from 'react-toastify'
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
 
       
       <Routess/>
+      <ToastContainer/>
     </div>
   )
 }
