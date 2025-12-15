@@ -6,7 +6,7 @@ import { AppContext } from '../context/AppContext.jsx';
 const Header = () => {
 
     const {userData} = useContext(AppContext);
-    console.log(userData);
+    // console.log(userData);
     return (
         <div className='w-full   flex flex-col justify-center items-center pt-4'>
             <div className='w-40'>
