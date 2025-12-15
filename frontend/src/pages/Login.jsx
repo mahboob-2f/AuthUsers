@@ -23,7 +23,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const {backendUrl,setIsLoggedIn} = useContext(AppContext);
+  const {backendUrl,setIsLoggedIn,getUserData} = useContext(AppContext);
   
   const submitHandler =async(e)=>{
     try {
@@ -33,14 +33,16 @@ const Login = () => {
       //          cookies will remain in browser only
 
       if(state ==='signUp'){
-        const {data}=await axios.post(backendUrl+'/api/auth/register',{
+        // console.log(backendUrl);
+        const {data} = await axios.post(backendUrl+'/api/auth/register',{
           name,
           email,
           password
-        })
+        }, { withCredentials: true })
         if(data.success){
           // TODO:   might be error in next line 
-          setIsLoggedIn(true);    
+          setIsLoggedIn(true);  
+          getUserData()  ;
           navigate('/');
         }else{
           // alert(data.message)
@@ -50,18 +52,19 @@ const Login = () => {
         const {data}=await axios.post(backendUrl+'/api/auth/login',{
           email,
           password
-        })
+        }, { withCredentials: true })
         if(data.success){
           setIsLoggedIn(true);
+          getUserData()  ;
           navigate('/');
         }else{
-          toast.error('Error while sending data to backend while loggin '+data.message);
+          toast.error("hello");
         }
 
       }
 
     } catch (error) {
-      toast.error("Error while sending data to backend  while registering "+data.message)
+      toast.error("Error : "+error.message)
     }
   }
 
@@ -80,11 +83,11 @@ const Login = () => {
           <p className='text-md font-light text-blue-300'>{state === 'signUp' ? 'Create Your Account' : 'Login to Your Account'}</p>
         </div>
 
-        <form onClick={submitHandler} className='flex flex-col   space-y-3'>
+        <form onSubmit={submitHandler} className='flex flex-col   space-y-3'>
 
           {
             state === 'signUp' && (
-              <div className='flex justify-between items-center bg-[#333A5C]  px-4 
+              <div className='flex justify-between items-center bg-[#333A5C]  px-4
             rounded-full text-white'>
                 <div><IoPersonOutline size={18} /></div>
                 <input type="text" placeholder='Full Name' required className='bg-transparent px-1 py-2 outline-0'
@@ -102,29 +105,30 @@ const Login = () => {
             />
           </div>
 
-          <div className='flex justify-between items-center bg-[#333A5C]  px-4
-            rounded-full text-white'>
+          <div className='relative flex justify-center items-center bg-[#333A5C]  px-4
+            rounded-full text-white   '>
             <div><RiLockPasswordFill size={18} /></div>
 
             <input type={showPassword ? "text" : "password"}
-              placeholder='Password' required className='bg-transparent px-1 py-2 outline-0'
+              placeholder='Password' required className=' bg-transparent px-1 py-2 outline-0'
                 onChange={(e)=>setPassword(e.target.value)} value={password}
               />
 
-            <div onClick={() => (setShowPassword(!showPassword))}>
+            <div className='absolute right-3 z-20  cursor-pointer' onClick={() => (setShowPassword(!showPassword))}>
               {
                 showPassword ? <IoIosEyeOff /> : <IoIosEye />
               }
-
             </div>
           </div>
           <p onClick={()=>(navigate('/reset-password'))} className='px-1 justify-self-start text-[15px] text-indigo-500 font-medium cursor-pointer'>Forgot Password ?</p>
 
-          <div   className='flex justify-center items-center text-white mt-3   py-2  
-            bg-[linear-gradient(308deg,rgba(6,0,255,0.72)_21%,rgba(130,144,238,0.8)_100%)]
-            rounded-full hover:bg-[linear-gradient(308deg,rgba(6,0,255,0.92)_21%,rgba(130,144,238,1)_100%)]
+          <div className='flex justify-center items-center text-white mt-3     
+            
+            rounded-full hover:
             transition-all duration-200 cursor-pointer'>
-            <button className='text-xl cursor-pointer'>{state === 'signUp' ? "Sign Up" : 'Login'}</button>
+            <button type='submit' className='bg-[linear-gradient(308deg,rgba(6,0,255,0.72)_21%,rgba(130,144,238,0.8)_100%)] 
+              hover:bg-[linear-gradient(308deg,rgba(6,0,255,0.92)_21%,rgba(130,144,238,1)_100%)]
+              w-full text-xl cursor-pointer py-2 rounded-full '>{state === 'signUp' ? "Sign Up" : 'Login'}</button>
           </div>
 
         </form>

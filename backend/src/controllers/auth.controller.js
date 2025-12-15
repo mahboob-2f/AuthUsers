@@ -21,7 +21,7 @@ export const register = async(req,res)=>{
         if(
             [name,email,password].some((field)=> field?.trim()==='')
         ){
-            return res.status(500)
+            return res.status(400)
                 .json({
                     success:false,
                     message:"Required field are missing",
@@ -107,7 +107,7 @@ export const register = async(req,res)=>{
         
     } catch (error) {
         console.log("Error while registering the user : ",error.message);
-        return res.status(500)
+        return res.status(400)
             .json({
                 success:false,
                 message:`Error while registering the user: ${error.message}`,
@@ -179,7 +179,7 @@ export const logIn = async(req,res)=>{
     }catch(error){
         res.status(400)
             .json({
-                success:false,
+                success:false, 
                 message:`Something went wrong with login ${error.message}`,
             })
     }

@@ -1,14 +1,19 @@
 import React from 'react';
 import { assests } from '../assets/assests.js';
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext.jsx';
 
 const Header = () => {
+
+    const {userData} = useContext(AppContext);
+    console.log(userData);
     return (
         <div className='w-full   flex flex-col justify-center items-center pt-4'>
             <div className='w-40'>
                 <img src={assests.bot} alt="bot image" loading='lazy' />
             </div>
             <div className='flex justify-center items-center '>
-                <h1 className='text-[26px] font-medium'>Hey Developer </h1>
+                <h1 className='text-[26px] font-medium'>Hey {userData ? userData.name : "Developer"} </h1>
                 <img src={assests.hey} alt="hey image" loading='lazy' className='w-20' />
             </div>
             <div className='flex flex-col space-y-2 justify-center items-center '>

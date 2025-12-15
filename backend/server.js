@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectDB from './src/db/index.js';
 import { authRouter } from './src/routes/authRouter.route.js';
-import { userRouter } from './src/routes/user.router.js';
+import { userRouter } from './src/routes/userRouter.router.js';
 
 
 
@@ -16,10 +16,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
-app.use(cors({credentials:true}))
+
+const allowedOrigins = ['http://localhost:5173']
+app.use(cors({
+    origin:allowedOrigins,
+    credentials:true,
+}))
 
 
-const port = process.env.PORT || 4001;
+const port = process.env.PORT || 4000;
 
 //        here we are connecting to MongoDB Database
 
