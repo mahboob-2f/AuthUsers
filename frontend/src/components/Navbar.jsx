@@ -22,6 +22,22 @@ const Navbar = () => {
       toast.error(error.message);
     }
   }
+  const sendVerificationOtp = async () =>{
+    try{
+      axios.defaults.withCredentials =true;
+
+      const {data}= await axios.post(backendUrl+'/api/auth/send-verify-otp')
+      if(data.success){
+        navigate('/verify-email');  
+        toast.success(data.message);
+      }else{
+          toast.error("wrong with sending otp");
+      }
+
+    }catch(error){
+      toast.error(error.message);
+    }
+  }
 
   return (
     <div className='flex w-full justify-between items-center px-16 sticky top-0 bg-amber-200 '>
@@ -41,9 +57,14 @@ const Navbar = () => {
                 <ul className='flex flex-col text-sm w-24   bg-gray-200 rounded-md '>
                   {
                     !userData.isAccountVerified &&
-                    <li className='  px-1 py-1 text-center hover:text-blue-800 rounded-md hover:bg-gray-300'>verify email</li>
+                    <li className='  px-1 py-1 text-center hover:text-blue-800 rounded-md hover:bg-gray-300 cursor-pointer'
+                    onClick={sendVerificationOtp}   >verify email
+                      </li>
                   }
-                  <li onClick={logout} className='cursor-pointer px-1 py-1 text-center hover:text-blue-800 rounded-md hover:bg-gray-300'>logout</li>
+                  <li onClick={logout} 
+                  className='cursor-pointer px-1 py-1 text-center hover:text-blue-800 rounded-md hover:bg-gray-300'>
+                    logout
+                    </li>
                 </ul>
               </div>
             </div>

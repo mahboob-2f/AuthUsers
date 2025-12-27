@@ -3,6 +3,7 @@ import { User } from '../models/user.models.js';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 import { transpoter } from '../config/nodemailer.config.js'
+import { resetPasswordTemplate } from '../config/resetPassTemplate.js';
 
 
 
@@ -340,8 +341,8 @@ export const sendVerifyOtp = async (req, res) => {
                 })
         }
 
-        const otp = String(Math.floor((Math.random() * 900000 + 1000000)));
-
+        const otp = String(Math.floor((Math.random() * 900000 + 100000)));
+        console.log(otp);
         user.verifyOtp = otp
         user.verifyOtpExpiredAt = Date.now() + 24 * 60 * 60 * 1000;
 
@@ -401,6 +402,7 @@ export const verifyEmail = async (req, res) => {
         }
 
         if (user.verifyOtp === '' || user.verifyOtp !== otp) {
+            console.log(otp);
             return res.status(400)
                 .json({
                     success: false,
@@ -424,7 +426,7 @@ export const verifyEmail = async (req, res) => {
 
         return res.status(200)
             .json({
-                success: false,
+                success: true,
                 message: "Email verified Successfully",
             })
 
@@ -481,7 +483,7 @@ export const sendResetOtp = async (req, res) => {
                 })
         }
 
-        const otp = String(Math.floor(Math.random() * 900000 + 1000000))
+        const otp = String(Math.floor(Math.random() * 900000 + 100000))
 
         user.resetOtp = otp;
         user.resetOtpExpiredAt = Date.now() + 15 * 60 * 1000;
@@ -492,7 +494,7 @@ export const sendResetOtp = async (req, res) => {
             from: process.env.SENDER_EMAIL,
             to: user.email,
             subject: "Password Reset OTP",
-            text: `OTP for Resetting Your password is ${otp}`,
+            html: resetPasswordTemplate(otp)
         }
         await transpoter.sendMail(mailOptions);
 
