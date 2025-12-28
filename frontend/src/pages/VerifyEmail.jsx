@@ -86,7 +86,7 @@ function VerifyEmail() {
               />
             )
           }
-        </div>
+        </div>  
         <button type='submit' className=''>Verify Email</button>
       </form>
       

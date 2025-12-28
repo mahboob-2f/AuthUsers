@@ -41,6 +41,7 @@ const Login = () => {
         }, { withCredentials: true })
         if(data.success){
          
+          toast.success(data.message);
           setIsLoggedIn(true);  
           getUserData()  ;
           navigate('/');
@@ -120,7 +121,8 @@ const Login = () => {
               }
             </div>
           </div>
-          <p onClick={()=>(navigate('/reset-password'))} className='px-1 justify-self-start text-[15px] text-indigo-500 font-medium cursor-pointer'>Forgot Password ?</p>
+          <p onClick={()=>(navigate('/send-reset-otp'))} className='px-1 justify-self-start text-[15px] text-indigo-500 font-medium cursor-pointer'>
+            Forgot Password ?</p>
 
           <div className='flex justify-center items-center text-white mt-3     
             

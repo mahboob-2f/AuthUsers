@@ -500,7 +500,7 @@ export const sendResetOtp = async (req, res) => {
 
         return res.status(200)
             .json({
-                success: false,
+                success: true,
                 message: "Reset OTP send to User",
             })
 

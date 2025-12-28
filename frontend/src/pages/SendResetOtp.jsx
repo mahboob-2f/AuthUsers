@@ -4,20 +4,24 @@ import { useState } from 'react'
 import {AppContext} from '../context/AppContext.jsx'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 function ResetPass() {
   const [email,setEmail] = useState('');
   const {backendUrl}=useContext(AppContext);
 
+  const navigate = useNavigate();
+
   const submitHandler = async (e) =>{
     try{
       e.preventDefault();
 
-      const {data}= await axios.post(backendUrl+ '/api/auth/send-reset-otp');
+      const {data}= await axios.post(backendUrl+ '/api/auth/send-reset-otp',{email});
       if(data.success){
-        toast.success(data.success);
+        toast.success(data.message);
+        navigate('/reset-password')
       }else{
-        toast.error(data.message);
+        toast.error(data.message)
       }
 
     }catch(error){
