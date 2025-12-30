@@ -38,7 +38,7 @@ function ResetPass() {
         </h1>
       </div>
       <form action="" onSubmit={submitHandler}>
-        <input type="email" placeholder='enter email' onChange={e => setEmail(e.target.value)} value ={email}/>
+        <input type="email" placeholder='enter registered Email' onChange={e => setEmail(e.target.value)} value ={email}/>
         <button >Send Reset Otp</button>
       </form>
     </div>
